@@ -1,0 +1,126 @@
+name: ocean_path
+description: "Aqua Path: Reef Builder - A 2D casual grow-and-collect runner game"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.10.4 <4.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.34.0
+  flame_audio: ^2.11.12
+  shared_preferences: ^2.5.4
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # Asset declarations for Aqua Path: Reef Builder
+  assets:
+    # Images - Backgrounds (Parallax layers + Menu)
+    - assets/images/background_deep_ocean.png
+    - assets/images/background_mid_water.png
+    - assets/images/background_seabed.png
+    - assets/images/background_reef_sanctuary.png
+    
+    # Images - Fish sprites
+    - assets/images/fish_clownfish.png
+    - assets/images/fish_teal.png
+    - assets/images/fish_blue_tang.png
+    
+    # Images - Collectibles
+    - assets/images/food_bubbles.png
+    - assets/images/currency_shells.png
+    
+    # Images - Obstacles/Hazards
+    - assets/images/obstacle_fishing_net.png
+    - assets/images/obstacle_plastic_bottle.png
+    - assets/images/obstacle_plastic_bag.png
+    - assets/images/obstacle_six_pack_rings.png
+    - assets/images/obstacle_oil_spill.png
+    - assets/images/obstacle_algae_pollution.png
+    
+    # Images - UI Buttons
+    - assets/images/btn_play.png
+    - assets/images/btn_pause.png
+    - assets/images/btn_menu.png
+    - assets/images/btn_home.png
+    - assets/images/btn_restart.png
+    - assets/images/btn_settings.png
+    - assets/images/btn_fish_collection.png
+    - assets/images/btn_store.png
+    
+    # Images - UI Elements
+    - assets/images/ui_growth_bar.png
+    - assets/images/panel_wooden_board.png
+    - assets/images/logo.png
+    
+    # Audio files
+    - assets/audio/bgsong.mp3
+    - assets/audio/bloop.wav
+    - assets/audio/buttonClick.wav
+    - assets/audio/levelUp.wav
+    - assets/audio/thud.wav
+    - assets/audio/win.wav
+    - assets/audio/gameover.wav
+
+  # Custom fonts for Aqua Path (minimal set per Design Language)
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka/Fredoka-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Fredoka/Fredoka-Bold.ttf
+          weight: 700
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito/Nunito-Bold.ttf
+          weight: 700

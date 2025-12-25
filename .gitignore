@@ -1,0 +1,224 @@
+# ============================================
+# FLUTTER PROJECT .GITIGNORE
+# Clean repository for GitHub Actions CI/CD
+# ============================================
+
+# ====================
+# BUILD & GENERATED
+# ====================
+# Flutter/Dart build output
+/build/
+**/build/
+.dart_tool/
+.pub-cache/
+.pub/
+/coverage/
+
+# Generated API docs
+**/doc/api/
+
+# Symbolication & obfuscation
+app.*.symbols
+app.*.map.json
+
+# ====================
+# IDE & EDITOR FILES
+# ====================
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code (uncomment if you don't want to share settings)
+.vscode/
+
+# Other editors
+.atom/
+.buildlog/
+.history
+*.swp
+*~
+
+# ====================
+# OS SPECIFIC FILES
+# ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ====================
+# ANDROID SPECIFIC
+# ====================
+# Local properties (CONTAINS LOCAL SDK PATHS WITH USERNAME)
+**/android/local.properties
+
+# Build outputs
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/.gradle/
+**/android/gradle/.tmp/
+**/android/gradlew.bat
+**/android/gradlew
+
+# Signing keys (NEVER commit these)
+**/android/key.properties
+**/android/app/*.keystore
+**/android/app/*.jks
+**/android/*.keystore
+**/android/*.jks
+
+# ====================
+# iOS SPECIFIC
+# ====================
+**/ios/.generated/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Generated.xcconfig
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode user data
+*.xcuserstate
+*.xcuserdatad
+xcuserdata/
+
+# ====================
+# macOS SPECIFIC
+# ====================
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+
+# ====================
+# LINUX SPECIFIC
+# ====================
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+**/linux/flutter/generated_plugins.cmake
+
+# ====================
+# WINDOWS SPECIFIC
+# ====================
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+**/windows/flutter/generated_plugins.cmake
+
+# ====================
+# WEB SPECIFIC
+# ====================
+**/web/.dart_tool/
+
+# ====================
+# FLUTTER PLUGIN FILES
+# ====================
+# These are generated and contain local paths
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# ====================
+# DART/PUB FILES
+# ====================
+# Deprecated package config
+.packages
+
+# ====================
+# MISCELLANEOUS
+# ====================
+*.class
+*.log
+*.pyc
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# Crashlytics
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Sentry
+sentry.properties
+
+# Firebase (may contain project IDs)
+# google-services.json  # Uncomment if you don't want to share Firebase config
+# GoogleService-Info.plist  # Uncomment for iOS Firebase config
+
+# ====================
+# ENVIRONMENT FILES
+# ====================
+# These may contain API keys or secrets
+.env
+.env.*
+*.env
+env/
+.envrc
+
+# ====================
+# LOGS & TEMP FILES
+# ====================
+*.log
+*.tmp
+*.temp
+*.bak
+*.cache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ====================
+# KEYSTORE & SIGNING (CI/CD)
+# ====================
+# Keystore files - NEVER commit these
+*.keystore
+*.jks
+*.p12
+*.pfx
+
+# Key properties files
+**/key.properties
+**/keystore.properties
+**/signing.properties
+
+# GitHub secrets backup files
+**/github-secrets*.txt
+**/secrets-backup*.txt
+
+# Generated release keystores in android folder
+**/android/app/release-keystore.*
+**/android/release-keystore.*
+
+# documentation
+documentation/
+
+# ====================
+# SCRIPT OUTPUT FILES
+# ====================
+# Temporary files from keystore generation
+oceanpath-release.jks
+oceanpath-release.keystore
+github-secrets-BACKUP-DELETE-AFTER-USE.txt

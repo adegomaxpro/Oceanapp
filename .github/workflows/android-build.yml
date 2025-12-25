@@ -1,0 +1,133 @@
+# ==============================================================================
+# OCEAN PATH - Android Signed Build Workflow
+# ==============================================================================
+# Automatically builds signed APK and AAB on every push.
+# Uses GitHub Secrets for keystore security - never exposes sensitive data.
+# ==============================================================================
+
+name: Android Signed Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  FLUTTER_VERSION: '3.38.5'
+  JAVA_VERSION: '17'
+
+jobs:
+  build:
+    name: Build Signed APK & AAB
+    runs-on: ubuntu-latest
+    
+    steps:
+      # ========================================
+      # CHECKOUT & SETUP
+      # ========================================
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Verify Flutter Installation
+        run: |
+          flutter --version
+          flutter doctor -v
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
+
+      # ========================================
+      # KEYSTORE SETUP (Secure)
+      # ========================================
+      - name: Decode Keystore from Secrets
+        run: |
+          echo "${{ secrets.OCEANPATH_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-keystore.jks
+        shell: bash
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << EOF
+          storePassword=${{ secrets.OCEANPATH_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.OCEANPATH_KEY_PASSWORD }}
+          keyAlias=${{ secrets.OCEANPATH_KEY_ALIAS }}
+          storeFile=release-keystore.jks
+          EOF
+        shell: bash
+
+      # ========================================
+      # BUILD SIGNED RELEASE
+      # ========================================
+      - name: Build Signed APK
+        run: flutter build apk --release
+
+      - name: Build Signed App Bundle (AAB)
+        run: flutter build appbundle --release
+
+      # ========================================
+      # CLEANUP SENSITIVE FILES
+      # ========================================
+      - name: Securely Remove Keystore and Properties
+        if: always()
+        run: |
+          rm -f android/app/release-keystore.jks
+          rm -f android/key.properties
+        shell: bash
+
+      # ========================================
+      # UPLOAD ARTIFACTS
+      # ========================================
+      - name: Upload Signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: OceanPath-Release-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Upload Signed AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: OceanPath-Release-AAB
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+          if-no-files-found: error
+
+      # ========================================
+      # BUILD SUMMARY
+      # ========================================
+      - name: Generate Build Summary
+        run: |
+          echo "## 🌊 Ocean Path Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Build Artifacts Generated" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK**: \`app-release.apk\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **AAB**: \`app-release.aab\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Artifact Retention: 30 days" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔐 Security" >> $GITHUB_STEP_SUMMARY
+          echo "- Keystore decoded from secrets at runtime" >> $GITHUB_STEP_SUMMARY
+          echo "- Sensitive files removed after build" >> $GITHUB_STEP_SUMMARY
+          echo "- No secrets exposed in logs" >> $GITHUB_STEP_SUMMARY
+
