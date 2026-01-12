@@ -60,19 +60,48 @@ jobs:
       # ========================================
       # KEYSTORE SETUP (Secure)
       # ========================================
+      - name: Validate Signing Secrets
+        run: |
+          if [ -z "${{ secrets.OCEANPATH_KEYSTORE_BASE64 }}" ]; then
+            echo "❌ ERROR: OCEANPATH_KEYSTORE_BASE64 secret is not set!"
+            echo "Please configure GitHub Secrets. See docs/ANDROID_SIGNING.md"
+            exit 1
+          fi
+          if [ -z "${{ secrets.OCEANPATH_KEYSTORE_PASSWORD }}" ]; then
+            echo "❌ ERROR: OCEANPATH_KEYSTORE_PASSWORD secret is not set!"
+            exit 1
+          fi
+          if [ -z "${{ secrets.OCEANPATH_KEY_ALIAS }}" ]; then
+            echo "❌ ERROR: OCEANPATH_KEY_ALIAS secret is not set!"
+            exit 1
+          fi
+          if [ -z "${{ secrets.OCEANPATH_KEY_PASSWORD }}" ]; then
+            echo "❌ ERROR: OCEANPATH_KEY_PASSWORD secret is not set!"
+            exit 1
+          fi
+          echo "✅ All signing secrets are configured"
+        shell: bash
+
       - name: Decode Keystore from Secrets
         run: |
           echo "${{ secrets.OCEANPATH_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-keystore.jks
+          # Verify keystore was created and is valid
+          if [ ! -f android/app/release-keystore.jks ]; then
+            echo "❌ ERROR: Failed to create keystore file"
+            exit 1
+          fi
+          echo "✅ Keystore decoded successfully"
         shell: bash
 
       - name: Create key.properties
         run: |
-          cat > android/key.properties << EOF
+          cat > android/app/key.properties << EOF
           storePassword=${{ secrets.OCEANPATH_KEYSTORE_PASSWORD }}
           keyPassword=${{ secrets.OCEANPATH_KEY_PASSWORD }}
           keyAlias=${{ secrets.OCEANPATH_KEY_ALIAS }}
           storeFile=release-keystore.jks
           EOF
+          echo "✅ key.properties created at android/app/key.properties"
         shell: bash
 
       # ========================================
@@ -91,7 +120,7 @@ jobs:
         if: always()
         run: |
           rm -f android/app/release-keystore.jks
-          rm -f android/key.properties
+          rm -f android/app/key.properties
         shell: bash
 
       # ========================================
