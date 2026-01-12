@@ -50,17 +50,44 @@ android {
 
     buildTypes {
         release {
+            // IMPORTANT: Release builds MUST be signed with the release keystore.
+            // NO fallback to debug signing - this ensures Play Store builds are always properly signed.
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
-                // Fallback to debug signing for local development without keystore
-                signingConfigs.getByName("debug")
+                // Return null - build will fail with clear error when attempting release build
+                null
             }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+        }
+    }
+}
+
+// Fail fast with clear message when building release without proper signing
+gradle.taskGraph.whenReady {
+    if (hasTask(":app:assembleRelease") || hasTask(":app:bundleRelease")) {
+        if (!keystorePropertiesFile.exists()) {
+            throw GradleException(
+                "\n" +
+                "═══════════════════════════════════════════════════════════════════\n" +
+                "  ERROR: Release signing keystore not configured!\n" +
+                "═══════════════════════════════════════════════════════════════════\n" +
+                "  Release builds MUST be signed with the release keystore.\n" +
+                "  Debug signing fallback is NOT allowed for release builds.\n" +
+                "\n" +
+                "  Expected file: ${keystorePropertiesFile.absolutePath}\n" +
+                "\n" +
+                "  To fix:\n" +
+                "  • Local build: Run scripts/generate-keystore.ps1 and create key.properties\n" +
+                "  • CI/CD: Ensure GitHub Secrets are configured correctly\n" +
+                "\n" +
+                "  See docs/ANDROID_SIGNING.md for detailed instructions.\n" +
+                "═══════════════════════════════════════════════════════════════════\n"
             )
         }
     }
